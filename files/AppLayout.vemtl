@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+    <head>
+        <import template="AppLayout_MainHeaderContent">
+
+        <import template="AppLayout_ExtraHeaderContent">
+    </head>
+    
+    <body class="sidebar-mini layout-fixed layout-navbar-fixed">
+        <import template="AppLayout_MainDiv">
+
+        <import template="AppLayout_ExtraBodyContent">
+
+        <import template="AlpineImageViewerComponent">
+    </body>
+</html>

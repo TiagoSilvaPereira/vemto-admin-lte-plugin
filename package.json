@@ -1,0 +1,10 @@
+{
+    "version": "1.0.0",
+    "id": "app.vemto.admin-lte",
+    "name": "admin-lte",
+    "title": "Admin LTE Theme",
+    "description": "Admin LTE Admin Panel Theme",
+    "image": "",
+    "main": "src/main.js",
+    "vueComponent": "dist/admin-lte.umd.min.js"
+}
