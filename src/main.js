@@ -24,12 +24,12 @@ module.exports = (vemto) => {
             })
         },
 
-        beforeCodeGenerationStart() {
+        templateReplacements() {
             vemto.log.message('Replacing stubs for Admin LTE...')
             
             let basePath = '/views/frameworks/bootstrap'
 
-            vemto.replaceStub(`${basePath}/AppLayout.vemtl`, 'files/AppLayout.vemtl')
+            vemto.replaceTemplate(`${basePath}/AppLayout.vemtl`, 'files/AppLayout.vemtl')
         }
 
     }
