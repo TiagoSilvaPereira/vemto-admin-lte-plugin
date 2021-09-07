@@ -25,13 +25,19 @@ module.exports = (vemto) => {
         },
 
         templateReplacements() {
-            vemto.log.message('Replacing stubs for Admin LTE...')
+            vemto.log.message('Replacing stubs for AdminLTE...')
             
             let basePath = '/views/frameworks/bootstrap'
 
             vemto.replaceTemplate(`${basePath}/AppLayout.vemtl`, 'files/AppLayout.vemtl')
             vemto.replaceTemplate(`${basePath}/AppLayout_MainDiv.vemtl`, 'files/AppLayout_MainDiv.vemtl')
             vemto.replaceTemplate(`${basePath}/AppLayout_MainHeaderContent.vemtl`, 'files/AppLayout_MainHeaderContent.vemtl')
+        },
+
+        beforeCodeGenerationEnd() {
+            vemto.log.message('Generating specific AdminLTE files...')
+
+            vemto.renderTemplate('/files/Sidebar.vemtl', '/resources/views/layouts/sidebar.blade.php')
         }
 
     }
