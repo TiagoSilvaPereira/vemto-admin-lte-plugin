@@ -1,0 +1,11 @@
+<div id="app" class="wrapper">
+    <div class="main-header">
+        @include('layouts.nav')
+    </div>
+
+    @include('layouts.sidebar')
+
+    <main class="content-wrapper p-5">
+        @yield('content')
+    </main>
+</div>
