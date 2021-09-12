@@ -6,7 +6,7 @@
         <import template="AppLayout_ExtraHeaderContent">
     </head>
     
-    <body class="sidebar-mini layout-fixed layout-navbar-fixed">
+    <body class="sidebar-mini layout-fixed layout-navbar-fixed sidebar-collapse">
         <import template="AppLayout_MainDiv">
 
         <import template="AppLayout_ExtraBodyContent">

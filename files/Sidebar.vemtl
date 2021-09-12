@@ -8,11 +8,25 @@
 
     <!-- Sidebar -->
     <div class="sidebar">
+
+        @auth
+        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+            <div class="image">
+                <img src="https://ui-avatars.com/api/?background=0D8ABC&color=fff&name={{ auth()->user()->name }}" class="img-circle elevation-2" alt="User Image">
+            </div>
+            <div class="info">
+                <a href="#" class="d-block">{{ auth()->user()->name }}</a>
+            </div>
+        </div>
+        @endauth
+
         <!-- Sidebar Menu -->
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column nav-child-indent" data-widget="treeview" role="menu">
+
+                @auth
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="{{ route('home') }}" class="nav-link">
                         <i class="nav-icon icon ion-md-pulse"></i>
                         <p>
                             Dashboard
@@ -20,8 +34,8 @@
                     </a>
                 </li>
 
-                <li class="nav-item menu-open">
-                    <a href="#" class="nav-link active">
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
                         <i class="nav-icon icon ion-md-apps"></i>
                         <p>
                             Apps
@@ -29,27 +43,73 @@
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="../tables/simple.html" class="nav-link active">
-                                <i class="nav-icon icon ion-md-radio-button-off"></i>
-                                <p>Users</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="../tables/data.html" class="nav-link">
-                                <i class="nav-icon icon ion-md-radio-button-off"></i>
-                                <p>Orders</p>
-                            </a>
-                        </li>
+                        <% for(let crud of this.project.getNotDetailCruds()) { %>
+                            @can('view-any', <$ this.projectHelper.getModelsNamespace() $>\<$ crud.model.name $>::class)
+                            <li class="nav-item">
+                                <a href="{{ route('<$ crud.model.plural.case('paramCase') $>.index') }}" class="nav-link">
+                                    <i class="nav-icon icon ion-md-radio-button-off"></i>
+                                    <p><$ crud.name $></p>
+                                </a>
+                            </li>
+                            @endcan
+                        <% } %>
                     </ul>
                 </li>
 
+                <% if(this.generatorSettings.modules.permissions) { %>
+                @if (Auth::user()->can('view-any', Spatie\Permission\Models\Role::class) || 
+                    Auth::user()->can('view-any', Spatie\Permission\Models\Permission::class))
                 <li class="nav-item">
-                    <a href="https://adminlte.io/docs/3.1//index.html" class="nav-link">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon icon ion-md-key"></i>
+                        <p>
+                            Access Management
+                            <i class="nav-icon right icon ion-md-arrow-round-back"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        @can('view-any', Spatie\Permission\Models\Role::class)
+                        <li class="nav-item">
+                            <a href="{{ route('roles.index') }}" class="nav-link">
+                                <i class="nav-icon icon ion-md-radio-button-off"></i>
+                                <p>Roles</p>
+                            </a>
+                        </li>
+                        @endcan
+
+                        @can('view-any', Spatie\Permission\Models\Permission::class)
+                        <li class="nav-item">
+                            <a href="{{ route('permissions.index') }}" class="nav-link">
+                                <i class="nav-icon icon ion-md-radio-button-off"></i>
+                                <p>Permissions</p>
+                            </a>
+                        </li>
+                        @endcan
+                    </ul>
+                </li>
+                @endif
+                <% } %>
+                @endauth
+
+                <li class="nav-item">
+                    <a href="https://adminlte.io/docs/3.1//index.html" target="_blank" class="nav-link">
                         <i class="nav-icon icon ion-md-help-circle-outline"></i>
                         <p>Docs</p>
                     </a>
                 </li>
+
+                @auth
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                        <i class="nav-icon icon ion-md-exit"></i>
+                        <p>{{ __('Logout') }}</p>
+                    </a>
+
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                        @csrf
+                    </form>
+                </li>
+                @endauth
             </ul>
         </nav>
         <!-- /.sidebar-menu -->

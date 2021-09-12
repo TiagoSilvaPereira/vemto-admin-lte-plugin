@@ -1,0 +1,26 @@
+<# TEMPLATE VARIABLES #>
+<% let crudNameSnakeCase = this.crud.name.case('snakeCase') %>
+<% let modelNameCamelCase = this.model.name.case('camelCase') %>
+<% let modelPluralParamCase = this.model.plural.case('paramCase') %>
+<% let modelPluralCamelCase = this.model.plural.case('camelCase') %>
+<####>
+<####>
+@extends('layouts.app')
+
+@section('content')
+<div class="container">
+    <import template="IndexView_Searchbar">
+    
+    <div class="card">
+        <div class="card-body">
+            <div style="display: flex; justify-content: space-between;">
+                <h4 class="card-title">
+                    @lang('crud.<$ crudNameSnakeCase $>.index_title')
+                </h4>
+            </div>
+
+            <import template="IndexView_Table">
+        </div>
+    </div>
+</div>
+@endsection

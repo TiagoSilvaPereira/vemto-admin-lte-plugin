@@ -30,8 +30,16 @@ module.exports = (vemto) => {
             let basePath = '/views/frameworks/bootstrap'
 
             vemto.replaceTemplate(`${basePath}/AppLayout.vemtl`, 'files/AppLayout.vemtl')
+            vemto.replaceTemplate(`${basePath}/IndexView.vemtl`, 'files/IndexView.vemtl')
+            vemto.replaceTemplate(`${basePath}/AppNav.vemtl`, 'files/AppNav.vemtl')
             vemto.replaceTemplate(`${basePath}/AppLayout_MainDiv.vemtl`, 'files/AppLayout_MainDiv.vemtl')
             vemto.replaceTemplate(`${basePath}/AppLayout_MainHeaderContent.vemtl`, 'files/AppLayout_MainHeaderContent.vemtl')
+        },
+
+        beforeRenderIndexView(template, content) {
+            vemto.log.message('Replacing some IndexView CSS classes...')
+
+            return content.replace('searchbar mt-4 mb-5', 'searchbar mt-0 mb-4')
         },
 
         beforeCodeGenerationEnd() {
