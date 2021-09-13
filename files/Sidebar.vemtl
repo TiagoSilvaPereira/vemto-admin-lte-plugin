@@ -1,24 +1,13 @@
 <!-- Main Sidebar Container -->
-<aside class="main-sidebar sidebar-dark-primary elevation-4">
+<aside class="main-sidebar sidebar-<$ this.pluginData.sidebarMode $>-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="index3.html" class="brand-link">
+    <a href="{{ url('/') }}" class="brand-link">
         <img src="https://vemto.app/favicon.png" alt="Vemto Logo" class="brand-image bg-white img-circle">
         <span class="brand-text font-weight-light"><$ this.project.name $></span>
     </a>
 
     <!-- Sidebar -->
     <div class="sidebar">
-
-        @auth
-        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-            <div class="image">
-                <img src="https://ui-avatars.com/api/?background=0D8ABC&color=fff&name={{ auth()->user()->name }}" class="img-circle elevation-2" alt="User Image">
-            </div>
-            <div class="info">
-                <a href="#" class="d-block">{{ auth()->user()->name }}</a>
-            </div>
-        </div>
-        @endauth
 
         <!-- Sidebar Menu -->
         <nav class="mt-2">
@@ -43,7 +32,7 @@
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
-                        <% for(let crud of this.project.getNotDetailCruds()) { %>
+                        <% for(let crud of this.project.getMainCruds()) { %>
                             @can('view-any', <$ this.projectHelper.getModelsNamespace() $>\<$ crud.model.name $>::class)
                             <li class="nav-item">
                                 <a href="{{ route('<$ crud.model.plural.case('paramCase') $>.index') }}" class="nav-link">

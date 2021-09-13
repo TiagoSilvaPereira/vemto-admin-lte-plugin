@@ -6,7 +6,8 @@
         <import template="AppLayout_ExtraHeaderContent">
     </head>
     
-    <body class="sidebar-mini layout-fixed layout-navbar-fixed sidebar-collapse">
+    <% let sidebarCollapsedClass = this.pluginData.sidebarCollapsed ? 'sidebar-collapse' : '' %>
+    <body class="sidebar-mini layout-fixed layout-navbar-fixed <$ sidebarCollapsedClass $>">
         <import template="AppLayout_MainDiv">
 
         <import template="AppLayout_ExtraBodyContent">

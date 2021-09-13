@@ -20,7 +20,8 @@ module.exports = (vemto) => {
 
         onInstall() {
             vemto.savePluginData({
-                sidebarMode: 'dark'
+                sidebarMode: 'dark',
+                sidebarCollapsed: true,
             })
         },
 

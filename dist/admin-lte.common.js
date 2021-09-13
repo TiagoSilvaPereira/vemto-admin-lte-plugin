@@ -203,14 +203,26 @@ if (typeof window !== 'undefined') {
 // Indicate to webpack that this file can be concatenated
 /* harmony default export */ var setPublicPath = (null);
 
-// CONCATENATED MODULE: /usr/local/lib/node_modules/@vue/cli-service-global/node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"349d58aa-vue-loader-template"}!/usr/local/lib/node_modules/@vue/cli-service-global/node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!/usr/local/lib/node_modules/@vue/cli-service-global/node_modules/cache-loader/dist/cjs.js??ref--0-0!/usr/local/lib/node_modules/@vue/cli-service-global/node_modules/vue-loader/lib??vue-loader-options!./src/Component.vue?vue&type=template&id=0bea18b9&
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"w-full"},[_vm._v(" Admin LTE plugin ")])}
+// CONCATENATED MODULE: /usr/local/lib/node_modules/@vue/cli-service-global/node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"349d58aa-vue-loader-template"}!/usr/local/lib/node_modules/@vue/cli-service-global/node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!/usr/local/lib/node_modules/@vue/cli-service-global/node_modules/cache-loader/dist/cjs.js??ref--0-0!/usr/local/lib/node_modules/@vue/cli-service-global/node_modules/vue-loader/lib??vue-loader-options!./src/Component.vue?vue&type=template&id=4752b6fb&
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"w-full"},[_c('div',[_c('label',{staticClass:"block text-sm font-bold mb-2"},[_vm._v("Sidebar Style")]),_c('div',{staticClass:"relative"},[_c('select',{directives:[{name:"model",rawName:"v-model",value:(_vm.sidebarMode),expression:"sidebarMode"}],staticClass:"input",on:{"change":[function($event){var $$selectedVal = Array.prototype.filter.call($event.target.options,function(o){return o.selected}).map(function(o){var val = "_value" in o ? o._value : o.value;return val}); _vm.sidebarMode=$event.target.multiple ? $$selectedVal : $$selectedVal[0]},function($event){return _vm.save()}]}},[_c('option',{attrs:{"value":"dark"}},[_vm._v("Dark")]),_c('option',{attrs:{"value":"light"}},[_vm._v("Light")])])])]),_c('div',{staticClass:"mt-4"},[_c('label',{staticClass:"inline-flex items-center"},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.sidebarCollapsed),expression:"sidebarCollapsed"}],staticClass:"form-checkbox",attrs:{"type":"checkbox"},domProps:{"checked":Array.isArray(_vm.sidebarCollapsed)?_vm._i(_vm.sidebarCollapsed,null)>-1:(_vm.sidebarCollapsed)},on:{"change":[function($event){var $$a=_vm.sidebarCollapsed,$$el=$event.target,$$c=$$el.checked?(true):(false);if(Array.isArray($$a)){var $$v=null,$$i=_vm._i($$a,$$v);if($$el.checked){$$i<0&&(_vm.sidebarCollapsed=$$a.concat([$$v]))}else{$$i>-1&&(_vm.sidebarCollapsed=$$a.slice(0,$$i).concat($$a.slice($$i+1)))}}else{_vm.sidebarCollapsed=$$c}},_vm.save]}}),_c('span',{staticClass:"ml-2"},[_vm._v("Sidebar starts collapsed")])])])])}
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/Component.vue?vue&type=template&id=0bea18b9&
+// CONCATENATED MODULE: ./src/Component.vue?vue&type=template&id=4752b6fb&
 
 // CONCATENATED MODULE: /usr/local/lib/node_modules/@vue/cli-service-global/node_modules/thread-loader/dist/cjs.js!/usr/local/lib/node_modules/@vue/cli-service-global/node_modules/babel-loader/lib??ref--12-1!/usr/local/lib/node_modules/@vue/cli-service-global/node_modules/cache-loader/dist/cjs.js??ref--0-0!/usr/local/lib/node_modules/@vue/cli-service-global/node_modules/vue-loader/lib??vue-loader-options!./src/Component.vue?vue&type=script&lang=js&
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -224,17 +236,20 @@ var staticRenderFns = []
   data: function data() {
     return {
       pluginData: {},
-      sidebarMode: 'dark'
+      sidebarMode: 'dark',
+      sidebarCollapsed: true
     };
   },
   created: function created() {
     this.pluginData = window.vemtoApi.getPluginData();
     this.sidebarMode = this.pluginData.sidebarMode;
+    this.sidebarCollapsed = this.pluginData.sidebarCollapsed;
   },
   methods: {
     save: function save() {
       window.vemtoApi.savePluginData({
-        sidebarMode: this.sidebarMode
+        sidebarMode: this.sidebarMode,
+        sidebarCollapsed: this.sidebarCollapsed
       });
     }
   }
