@@ -3,7 +3,7 @@
     "id": "app.vemto.admin-lte",
     "name": "admin-lte",
     "title": "AdminLTE Theme",
-    "description": "AdminLTE Admin Panel Theme",
+    "description": "AdminLTE Panel Theme",
     "image": "",
     "main": "src/main.js",
     "vueComponent": "dist/admin-lte.umd.min.js"
