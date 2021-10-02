@@ -4,7 +4,11 @@
     "name": "admin-lte",
     "title": "AdminLTE Theme",
     "description": "AdminLTE Panel Theme",
-    "image": "",
+    "image": null,
     "main": "src/main.js",
-    "vueComponent": "dist/admin-lte.umd.min.js"
+    "vueComponent": "dist/admin-lte.umd.min.js",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/TiagoSilvaPereira/vemto-admin-lte-plugin"
+    }
 }
