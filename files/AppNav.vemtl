@@ -10,7 +10,7 @@
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
                     <a class="nav-link" data-widget="pushmenu" href="#" role="button">
-                        <i class="icon ion-md-menu""></i>
+                        <i class="icon ion-md-menu"></i>
                     </a>
                 </li>
             </ul>
