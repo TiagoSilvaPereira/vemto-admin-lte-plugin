@@ -1,0 +1,87 @@
+<% let cols = 1 %>
+<div class="table-responsive">
+    <table class="table table-borderless table-hover table-sm">
+        <thead>
+            <tr>
+                <% for(let input of this.crud.inputs) { %>
+                <% if(input.onIndex && input.isAllowedOnIndexPages()) { %>
+                <% cols++ %>
+                <% if(input.isNumeric()) { %>
+                <th class="text-right">@lang('crud.<$ crudNameSnakeCase $>.inputs.<$ input.name $>')</th>
+                <% } else { %>
+                <th class="text-left">@lang('crud.<$ crudNameSnakeCase $>.inputs.<$ input.name $>')</th>
+                <% } %>
+                <% } %>
+                <% } %>
+                <th class="text-center">@lang('crud.common.actions')</th>
+            </tr>
+        </thead>
+        <tbody>
+            @forelse($<$ modelPluralCamelCase $> as $<$ modelNameCamelCase $>)
+            <tr>
+                <% for(let input of this.crud.inputs) { %>
+                <# COMPUTED INPUT #>
+                <% if(input.isComputed && input.onIndex) { %>
+                <% if(input.isNumeric()) { %>
+                <td class="text-right">{{ <$ input.computedFormula $> }}</td>
+                <% } else { %>
+                <td class="text-left">{{ <$ input.computedFormula $> }}</td>
+                <% } %>
+                <% } %>
+                <# INPUT LINKED TO FIELD #>
+                <% if(input.isLinkedToField() && input.onIndex) { %>
+                <% if(input.isImage()) { %>
+                <td><x-partials.thumbnail src="{{ $<$ modelNameCamelCase $>-><$ input.name $> ? \Storage::url($<$ modelNameCamelCase $>-><$ input.name $>) : '' }}"/></td>
+                <% } else if(input.isFile()) { %>
+                <td>@if($<$ modelNameCamelCase $>-><$ input.name $>) <a href="{{ \Storage::url($<$ modelNameCamelCase $>-><$ input.name $>) }}" target="blank"><i class="icon ion-md-download"></i>&nbsp;Download</a> @else - @endif</td>
+                <% } else { %>
+                <% if(input.isForRelationship()) { %>
+                <td>{{ optional($<$ modelNameCamelCase $>-><$ input.relationship.name $>)-><$ input.relationship.model.getLabelFieldName() $> ?? '-' }}</td>
+                <% } else if(input.isJson()) { %>
+                <td><pre>{{ json_encode($<$ modelNameCamelCase $>-><$ input.name $>) ?? '-' }}</pre></td>
+                <% } else if(input.isUrl()) { %>
+                <td><a target="_blank" href="{{ $<$ modelNameCamelCase $>-><$ input.name $> }}">{{ $<$ modelNameCamelCase $>-><$ input.name $> ?? '-' }}</a></td>
+                <% } else { %>
+                <td>{{ $<$ modelNameCamelCase $>-><$ input.name $> ?? '-' }}</td>
+                <% } %>
+                <% } %>
+                <% } %>
+                <% } %>
+                <td class="text-center" style="width: 134px;">
+                    <div role="group" aria-label="Row Actions" class="btn-group">
+                        @can('update', $<$ modelNameCamelCase $>)
+                        <a href="{{ route('<$ modelPluralParamCase $>.edit', $<$ modelNameCamelCase $>) }}">
+                            <button type="button" class="btn btn-light">
+                                <i class="icon ion-md-create text-primary"></i>
+                            </button>
+                        </a>
+                        @endcan
+
+                        @can('view', $<$ modelNameCamelCase $>)
+                        <a href="{{ route('<$ modelPluralParamCase $>.show', $<$ modelNameCamelCase $>) }}">
+                            <button type="button" class="btn btn-light">
+                                <i class="icon ion-md-eye"></i>
+                            </button>
+                        </a>
+                        @endcan
+
+                        @can('delete', $<$ modelNameCamelCase $>)
+                        <form action="{{ route('<$ modelPluralParamCase $>.destroy', $<$ modelNameCamelCase $>) }}" method="POST" onsubmit="return confirm('{{ __('crud.common.are_you_sure') }}')">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-light text-danger">
+                                <i class="icon ion-md-trash"></i>
+                            </button>
+                        </form>
+                        @endcan
+                    </div>
+                </td>
+            </tr>
+            @empty
+            <tr>
+                <td colspan="<$ cols $>">@lang('crud.common.no_items_found')</td>
+            </tr>
+            @endforelse
+        </tbody>
+    </table>
+</div>

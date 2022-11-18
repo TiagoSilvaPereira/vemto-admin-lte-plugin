@@ -1,0 +1,49 @@
+<# TEMPLATE VARIABLES #>
+<% let modelPluralSnakeCase = this.model.plural.case('snakeCase') %>
+<% let modelPluralParamCase = this.model.plural.case('paramCase') %>
+<% let crudNameSnakeCase = this.crud.name.case('snakeCase') %>
+<####>
+@extends('layouts.app')
+
+@section('content')
+<div class="container">
+    <div class="card card-outline card-primary">
+        <div
+            class="card-header"
+            style="display: flex; justify-content: space-between;"
+        >
+            <div class="card-title">
+                <a href="{{ route('<$ modelPluralParamCase $>.index') }}" class="mr-4">
+                    <i class="icon ion-md-arrow-back"></i>
+                </a>
+                @lang('crud.<$ crudNameSnakeCase $>.create_title')
+            </div>
+        </div>
+
+        <div class="card-body">
+            <x-form method="POST"
+                    action="{{ route('<$ modelPluralParamCase $>.store') }}"
+                    <$ this.crud.hasFileOrImageInputs() ? 'has-files' : '' $>
+                    class=""
+            >
+                @include('<$ this.project.viewsPath() $>.<$ modelPluralSnakeCase $>.form-inputs')
+
+                <hr>
+
+                <div class="mt-0">
+                    <a href="{{ route('<$ modelPluralParamCase $>.index') }}"
+                       class="btn btn-outline-primary"
+                    >
+                        <i class="icon ion-md-return-left"></i> @lang('crud.common.back')
+                    </a>
+
+                    <button type="submit" class="btn btn-primary float-right">
+                        <i class="icon ion-md-save"></i> @lang('crud.common.create')
+                    </button>
+                </div>
+
+            </x-form>
+        </div>
+    </div>
+</div>
+@endsection

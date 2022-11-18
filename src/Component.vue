@@ -24,8 +24,8 @@ export default {
     data() {
         return {
             pluginData: {},
-            sidebarMode: 'dark',
-            sidebarCollapsed: true,
+            sidebarMode: 'light',
+            sidebarCollapsed: false,
         }
     },
 

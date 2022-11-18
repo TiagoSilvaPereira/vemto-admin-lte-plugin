@@ -9,6 +9,27 @@
     <!-- Sidebar -->
     <div class="sidebar">
 
+        @auth
+            <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                <div class="image">
+                    <img
+                      src="https://www.w3schools.com/w3css/img_avatar3.png"
+                      class="img-circle elevation-2"
+                      alt="User Image"
+                    >
+                </div>
+                <div class="info">
+                    <a
+                      href="#"
+                      class="d-block"
+                    >
+                        {{\Str::of(auth()->user()->name)->explode(' ')->first() . ' ' . \Str::of(auth()->user()->name)->explode(' ')->last()}}
+                    </a>
+                </div>
+            </div>
+        @endauth
+
+
         <!-- Sidebar Menu -->
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column nav-child-indent" data-widget="treeview" role="menu">
@@ -23,7 +44,12 @@
                     </a>
                 </li>
 
-                <li class="nav-item">
+                <li class="nav-item @if(Route::is([
+                        <% for(let crud of this.project.getMainCruds()) { %>
+                              '<$ crud.model.plural.case('paramCase') $>.*',
+                        <% } %>
+                      ])) menu-open @endif"
+                >
                     <a href="#" class="nav-link">
                         <i class="nav-icon icon ion-md-apps"></i>
                         <p>
@@ -35,7 +61,7 @@
                         <% for(let crud of this.project.getMainCruds()) { %>
                             @can('view-any', <$ this.projectHelper.getModelsNamespace() $>\<$ crud.model.name $>::class)
                             <li class="nav-item">
-                                <a href="{{ route('<$ crud.model.plural.case('paramCase') $>.index') }}" class="nav-link">
+                                <a href="{{ route('<$ crud.model.plural.case('paramCase') $>.index') }}" class="nav-link @if(Route::is('<$ crud.model.plural.case('paramCase') $>.*')) active @endif">
                                     <i class="nav-icon icon ion-md-radio-button-off"></i>
                                     <p><$ crud.name $></p>
                                 </a>
@@ -46,9 +72,9 @@
                 </li>
 
                 <% if(this.generatorSettings.modules.permissions) { %>
-                @if (Auth::user()->can('view-any', Spatie\Permission\Models\Role::class) || 
+                @if (Auth::user()->can('view-any', Spatie\Permission\Models\Role::class) ||
                     Auth::user()->can('view-any', Spatie\Permission\Models\Permission::class))
-                <li class="nav-item">
+                <li class="nav-item @if(Route::is(['roles.*','permissions.*'])) menu-open @endif">
                     <a href="#" class="nav-link">
                         <i class="nav-icon icon ion-md-key"></i>
                         <p>
@@ -59,7 +85,7 @@
                     <ul class="nav nav-treeview">
                         @can('view-any', Spatie\Permission\Models\Role::class)
                         <li class="nav-item">
-                            <a href="{{ route('roles.index') }}" class="nav-link">
+                            <a href="{{ route('roles.index') }}" class="nav-link @if(Route::is('roles.*')) active @endif">
                                 <i class="nav-icon icon ion-md-radio-button-off"></i>
                                 <p>Roles</p>
                             </a>
@@ -68,7 +94,7 @@
 
                         @can('view-any', Spatie\Permission\Models\Permission::class)
                         <li class="nav-item">
-                            <a href="{{ route('permissions.index') }}" class="nav-link">
+                            <a href="{{ route('permissions.index') }}" class="nav-link @if(Route::is('permissions.*')) active @endif">
                                 <i class="nav-icon icon ion-md-radio-button-off"></i>
                                 <p>Permissions</p>
                             </a>

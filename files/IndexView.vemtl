@@ -10,17 +10,22 @@
 @section('content')
 <div class="container">
     <import template="IndexView_Searchbar">
-    
-    <div class="card">
-        <div class="card-body">
-            <div style="display: flex; justify-content: space-between;">
-                <h4 class="card-title">
-                    @lang('crud.<$ crudNameSnakeCase $>.index_title')
-                </h4>
+
+        <div class="card card-outline card-primary">
+            <div
+              class="card-header"
+              style="display: flex; justify-content: space-between;"
+            >
+                <div class="card-title">@lang('crud.<$ crudNameSnakeCase $>.index_title')</div>
             </div>
 
-            <import template="IndexView_Table">
+            <div class="card-body pt-0">
+                <import template="IndexView_Table">
+            </div>
+
+            <div class="card-footer">
+                {!! $<$ modelPluralCamelCase $>->render() !!}
+            </div>
         </div>
-    </div>
 </div>
 @endsection

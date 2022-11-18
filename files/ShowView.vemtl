@@ -1,0 +1,148 @@
+<# TEMPLATE VARIABLES #>
+<% let crudNameSnakeCase = this.crud.name.case('snakeCase') %>
+<% let modelNameCamelCase = this.model.name.case('camelCase') %>
+<% let modelPluralParamCase = this.model.plural.case('paramCase') %>
+<####>
+@extends('layouts.app')
+
+@section('content')
+<div class="container">
+    <div class="card card-outline card-primary">
+
+        <div
+          class="card-header"
+          style="display: flex; justify-content: space-between;"
+        >
+            <div class="card-title">
+                <a href="{{ route('<$ modelPluralParamCase $>.index') }}" class="mr-4">
+                    <i class="icon ion-md-arrow-back"></i>
+                </a>
+                @lang('crud.<$ crudNameSnakeCase $>.show_title')
+            </div>
+        </div>
+
+        <div class="card-body">
+
+            <div class="row mt-4">
+                <# CRUD input elements #>
+                <% for(let input of this.crud.inputs) { %>
+                    <% if(input.isLinkedToField() && input.onShow) { %>
+                        <# Input types #>
+                        <% if(input.isImage()) { %>
+                        <div class="col-md-6 mb-4">
+                            <h5>@lang('crud.<$ crudNameSnakeCase $>.inputs.<$ input.name $>')</h5>
+                            <x-partials.thumbnail src="{{ $<$ modelNameCamelCase $>-><$ input.name $> ? \Storage::url($<$ modelNameCamelCase $>-><$ input.name $>) : '' }}" size="150"/>
+                        </div>
+                        <% } else if (input.isFile()) { %>
+                        <div class="col-md-6 mb-4">
+                            <h5>@lang('crud.<$ crudNameSnakeCase $>.inputs.<$ input.name $>')</h5>
+                            @if($<$ modelNameCamelCase $>-><$ input.name $>) <a href="{{ \Storage::url($<$ modelNameCamelCase $>-><$ input.name $>) }}" target="blank"><i class="icon ion-md-download"></i>&nbsp;Download</a> @else - @endif
+                        </div>
+                        <% } else { %>
+                            <% if(input.isForRelationship()) { %>
+                            <div class="col-md-6 mb-4">
+                                <h5>@lang('crud.<$ crudNameSnakeCase $>.inputs.<$ input.name $>')</h5>
+                                <span>{{ optional($<$ modelNameCamelCase $>-><$ input.relationship.name $>)-><$ input.relationship.model.getLabelFieldName() $> ?? '-' }}</span>
+                            </div>
+                            <% } else if(input.isJson()) { %>
+                            <div class="col-md-6 mb-4">
+                                <h5>@lang('crud.<$ crudNameSnakeCase $>.inputs.<$ input.name $>')</h5>
+                                <pre>{{ json_encode($<$ modelNameCamelCase $>-><$ input.name $>) ?? '-' }}</pre>
+                            </div>
+                            <% } else if(input.isUrl()) {  %>
+                            <div class="col-md-6 mb-4">
+                                <h5>@lang('crud.<$ crudNameSnakeCase $>.inputs.<$ input.name $>')</h5>
+                                <a target="_blank" href="{{ $<$ modelNameCamelCase $>-><$ input.name $> }}">{{ $<$ modelNameCamelCase $>-><$ input.name $> ?? '-' }}</a>
+                            </div>
+                            <% } else { %>
+                            <div class="col-md-6 mb-4">
+                                <h5>@lang('crud.<$ crudNameSnakeCase $>.inputs.<$ input.name $>')</h5>
+                                <span>{{ $<$ modelNameCamelCase $>-><$ input.name $> ?? '-' }}</span>
+                            </div>
+                            <% } %>
+                        <% } %>
+                    <% } %>
+                <% } %>
+            </div>
+
+            <hr>
+
+            <# If it has permissions #>
+            <% if(this.generatorSettings.modules.permissions && this.model.isAuthModel()) { %>
+            <div class="mt-0">
+                <div class="mb-4">
+                    <h5>@lang('crud.roles.name')</h5>
+                    <div>
+                        @forelse ($<$ modelNameCamelCase $>->roles as $role)
+                            <div class="badge badge-primary">{{ $role->name }}</div>
+                            <br>
+                        @empty
+                            -
+                        @endforelse
+                    </div>
+                </div>
+            </div>
+            <% } %>
+
+            <div class="mt-4">
+                <a href="{{ route('<$ modelPluralParamCase $>.index') }}" class="btn btn-outline-primary">
+                    <i class="icon ion-md-return-left"></i> @lang('crud.common.back')
+                </a>
+
+                @can('create', <$ this.projectHelper.getModelsNamespace() $>\<$ this.model.name $>::class)
+                <a href="{{ route('<$ modelPluralParamCase $>.create') }}" class="btn btn-primary float-right">
+                    <i class="icon ion-md-add"></i> @lang('crud.common.create')
+                </a>
+                @endcan
+            </div>
+        </div>
+    </div>
+
+    <% if(this.crud.hasManyDetails) { %>
+    <# HasManyDetail components #>
+        <% for(let detail of this.crud.getHasManyDetailsForShowPage()) { %>
+        <% let detailModelNameCamelCase = detail.crud.model.name.case('camelCase') %>
+        @can('view-any', <$ this.projectHelper.getModelsNamespace() $>\<$ detail.relatedCrud.model.name $>::class)
+        <div class="card card-outline card-primary mt-4">
+
+            <div
+              class="card-header"
+              style="display: flex; justify-content: space-between;"
+            >
+                <div class="card-title w-100 mb-2">
+                    <$ detail.name $>
+                </div>
+            </div>
+
+            <div class="card-body">
+                <livewire:<$ detail.getLivewireViewName() $> :<$ detailModelNameCamelCase $>="$<$ detailModelNameCamelCase $>" />
+            </div>
+        </div>
+        @endcan
+        <% } %>
+    <% } %>
+
+    <% if(this.crud.manyToManyDetails) { %>
+    <# ManyToManyDetail components #>
+        <% for(let detail of this.crud.getManyToManyDetailsForShowPage()) { %>
+        <% let detailModelNameCamelCase = detail.crud.model.name.case('camelCase') %>
+        @can('view-any', <$ this.projectHelper.getModelsNamespace() $>\<$ detail.relatedCrud.model.name $>::class)
+            <div class="card card-outline card-primary mt-4">
+                <div
+                  class="card-header"
+                  style="display: flex; justify-content: space-between;"
+                >
+                    <div class="card-title w-100 mb-2">
+                        <$ detail.name $>
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    <livewire:<$ detail.getLivewireViewName() $> :<$ detailModelNameCamelCase $>="$<$ detailModelNameCamelCase $>" />
+                </div>
+            </div>
+        @endcan
+        <% } %>
+    <% } %>
+</div>
+@endsection

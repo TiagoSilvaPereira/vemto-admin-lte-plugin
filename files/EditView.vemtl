@@ -1,0 +1,95 @@
+<# TEMPLATE VARIABLES #>
+<% let modelPluralSnakeCase = this.model.plural.case('snakeCase') %>
+<% let modelPluralParamCase = this.model.plural.case('paramCase') %>
+<% let modelNameCamelCase = this.model.name.case('camelCase') %>
+<% let crudNameSnakeCase = this.crud.name.case('snakeCase') %>
+<####>
+@extends('layouts.app')
+
+@section('content')
+<div class="container">
+    <div class="card card-outline card-primary">
+
+        <div
+          class="card-header"
+          style="display: flex; justify-content: space-between;"
+        >
+            <div class="card-title">
+                <a href="{{ route('<$ modelPluralParamCase $>.index') }}" class="mr-4">
+                    <i class="icon ion-md-arrow-back"></i>
+                </a>
+                @lang('crud.<$ crudNameSnakeCase $>.edit_title')
+            </div>
+        </div>
+
+        <div class="card-body">
+            <x-form method="PUT" action="{{ route('<$ modelPluralParamCase $>.update', $<$ modelNameCamelCase $>) }}" <$ this.crud.hasFileOrImageInputs() ? 'has-files' : '' $> class="">
+                @include('<$ this.project.viewsPath() $>.<$ modelPluralSnakeCase $>.form-inputs')
+
+                <hr>
+
+                <div class="mt-0">
+                    <a href="{{ route('<$ modelPluralParamCase $>.index') }}" class="btn btn-outline-primary">
+                        <i class="icon ion-md-return-left"></i> @lang('crud.common.back')
+                    </a>
+
+                    <a href="{{ route('<$ modelPluralParamCase $>.create') }}" class="btn btn-outline-primary">
+                        <i class="icon ion-md-add"></i> @lang('crud.common.create')
+                    </a>
+
+                    <button type="submit" class="btn btn-primary float-right">
+                        <i class="icon ion-md-save"></i> @lang('crud.common.update')
+                    </button>
+                </div>
+            </x-form>
+        </div>
+    </div>
+
+    <% if(this.crud.hasManyDetails) { %>
+    <# HasManyDetail components #>
+        <% for(let detail of this.crud.getHasManyDetailsForEditPage()) { %>
+        <% let detailModelNameCamelCase = detail.crud.model.name.case('camelCase') %>
+        @can('view-any', <$ this.projectHelper.getModelsNamespace() $>\<$ detail.relatedCrud.model.name $>::class)
+            <div class="card card-outline card-primary mt-4">
+
+                <div
+                  class="card-header"
+                  style="display: flex; justify-content: space-between;"
+                >
+                    <div class="card-title w-100 mb-2">
+                        <$ detail.name $>
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    <livewire:<$ detail.getLivewireViewName() $> :<$ detailModelNameCamelCase $>="$<$ detailModelNameCamelCase $>" />
+                </div>
+            </div>
+        @endcan
+        <% } %>
+    <% } %>
+
+    <% if(this.crud.manyToManyDetails) { %>
+    <# ManyToManyDetail components #>
+        <% for(let detail of this.crud.getManyToManyDetailsForEditPage()) { %>
+        <% let detailModelNameCamelCase = detail.crud.model.name.case('camelCase') %>
+        @can('view-any', <$ this.projectHelper.getModelsNamespace() $>\<$ detail.relatedCrud.model.name $>::class)
+            <div class="card card-outline card-primary mt-4">
+                <div
+                  class="card-header"
+                  style="display: flex; justify-content: space-between;"
+                >
+                    <div class="card-title w-100 mb-2">
+                        <$ detail.name $>
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    <livewire:<$ detail.getLivewireViewName() $> :<$ detailModelNameCamelCase $>="$<$ detailModelNameCamelCase $>" />
+                </div>
+            </div>
+        @endcan
+        <% } %>
+    <% } %>
+</div>
+@endsection

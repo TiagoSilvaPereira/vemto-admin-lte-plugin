@@ -1,0 +1,30 @@
+<div class="searchbar mt-4 mb-5">
+    <div class="row">
+        <div class="col-md-10">
+            <form>
+                <div class="input-group">
+                    <input id="indexSearch"
+                           type="text"
+                           name="search"
+                           placeholder="{{ __('crud.common.search') }}"
+                           value="{{ $search ?? '' }}"
+                           class="form-control"
+                           autocomplete="off"
+                    >
+                    <div class="input-group-append">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="icon ion-md-search"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-2 text-right">
+            @can('create', <$ this.projectHelper.getModelsNamespace() $>\<$ this.model.name $>::class)
+            <a href="{{ route('<$ modelPluralParamCase $>.create') }}" class="btn btn-primary btn-block">
+                <i class="icon ion-md-add"></i> @lang('crud.common.create')
+            </a>
+            @endcan
+        </div>
+    </div>
+</div>
