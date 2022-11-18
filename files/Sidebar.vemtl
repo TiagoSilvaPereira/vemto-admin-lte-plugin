@@ -40,7 +40,7 @@
                         <% for(let crud of this.project.getMainCruds()) { %>
                             @can('view-any', <$ this.projectHelper.getModelsNamespace() $>\<$ crud.model.name $>::class)
                             <li class="nav-item">
-                                <a href="{{ route('<$ crud.model.plural.case('paramCase') $>.index') }}" class="nav-link">
+                                <a href="{{ route('<$ crud.model.plural.case('paramCase') $>.index') }}" class="nav-link @if(Route::is('<$ crud.model.plural.case('paramCase') $>.*')) active @endif">
                                     <i class="nav-icon icon ion-md-radio-button-off"></i>
                                     <p><$ crud.name $></p>
                                 </a>
