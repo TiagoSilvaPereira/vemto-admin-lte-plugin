@@ -53,7 +53,7 @@
                 <% if(this.generatorSettings.modules.permissions) { %>
                 @if (Auth::user()->can('view-any', Spatie\Permission\Models\Role::class) || 
                     Auth::user()->can('view-any', Spatie\Permission\Models\Permission::class))
-                <li class="nav-item">
+                <li class="nav-item @if(Route::is(['roles.*','permissions.*'])) menu-open @endif">
                     <a href="#" class="nav-link">
                         <i class="nav-icon icon ion-md-key"></i>
                         <p>
@@ -64,7 +64,7 @@
                     <ul class="nav nav-treeview">
                         @can('view-any', Spatie\Permission\Models\Role::class)
                         <li class="nav-item">
-                            <a href="{{ route('roles.index') }}" class="nav-link">
+                            <a href="{{ route('roles.index') }}" class="nav-link @if(Route::is('roles.*')) active @endif">
                                 <i class="nav-icon icon ion-md-radio-button-off"></i>
                                 <p>Roles</p>
                             </a>
@@ -73,7 +73,7 @@
 
                         @can('view-any', Spatie\Permission\Models\Permission::class)
                         <li class="nav-item">
-                            <a href="{{ route('permissions.index') }}" class="nav-link">
+                            <a href="{{ route('permissions.index') }}" class="nav-link @if(Route::is('permissions.*')) active @endif">
                                 <i class="nav-icon icon ion-md-radio-button-off"></i>
                                 <p>Permissions</p>
                             </a>
